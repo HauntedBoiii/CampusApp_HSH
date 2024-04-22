@@ -1,4 +1,7 @@
-# CampusApp_HSH
-Studierendenprojekt Hochschule Hannover
-This is a Flutterflow App
-contribute by creating a new branch. Request a Pull to merge your code into the master
+# CampusApp
+
+A new Flutter project.
+
+## Getting Started
+
+FlutterFlow projects are built to run on the Flutter _stable_ release.
