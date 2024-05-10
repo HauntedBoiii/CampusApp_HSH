@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/backend/schema/structs/index.dart';
+
+
 import '/index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
@@ -29,17 +32,97 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => const HomePageWidget(),
+      errorBuilder: (context, state) => appStateNotifier.showSplashImage
+          ? Builder(
+              builder: (context) => Container(
+                color: Colors.transparent,
+                child: Image.asset(
+                  'assets/images/6325254.jpg',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            )
+          : const LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => const HomePageWidget(),
+          builder: (context, _) => appStateNotifier.showSplashImage
+              ? Builder(
+                  builder: (context) => Container(
+                    color: Colors.transparent,
+                    child: Image.asset(
+                      'assets/images/6325254.jpg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                )
+              : const LoginPageWidget(),
         ),
         FFRoute(
-          name: 'HomePage',
-          path: '/homePage',
-          builder: (context, params) => const HomePageWidget(),
+          name: 'LucasTestSeite',
+          path: '/lucasTestSeite',
+          builder: (context, params) => const LucasTestSeiteWidget(),
+        ),
+        FFRoute(
+          name: 'MensaAngebot',
+          path: '/mensaAngebot',
+          builder: (context, params) => const MensaAngebotWidget(),
+        ),
+        FFRoute(
+          name: 'MensaOverviewPage',
+          path: '/mensaOverviewPage',
+          builder: (context, params) => const MensaOverviewPageWidget(),
+        ),
+        FFRoute(
+          name: 'manuellerMyAccount',
+          path: '/manuellerMyAccount',
+          builder: (context, params) => const ManuellerMyAccountWidget(),
+        ),
+        FFRoute(
+          name: 'messages',
+          path: '/messages',
+          builder: (context, params) => const MessagesWidget(),
+        ),
+        FFRoute(
+          name: 'LoginPage',
+          path: '/loginPage',
+          builder: (context, params) => const LoginPageWidget(),
+        ),
+        FFRoute(
+          name: 'HomeTest',
+          path: '/homeTest',
+          builder: (context, params) => const HomeTestWidget(),
+        ),
+        FFRoute(
+          name: 'CreatePostCopy',
+          path: '/createPostCopy',
+          builder: (context, params) => const CreatePostCopyWidget(),
+        ),
+        FFRoute(
+          name: 'NewPost',
+          path: '/newPost',
+          builder: (context, params) => const NewPostWidget(),
+        ),
+        FFRoute(
+          name: 'Home',
+          path: '/home',
+          builder: (context, params) => const HomeWidget(),
+        ),
+        FFRoute(
+          name: 'manuellerMyAccountCopy',
+          path: '/manuellerMyAccountCopy',
+          builder: (context, params) => const ManuellerMyAccountCopyWidget(),
+        ),
+        FFRoute(
+          name: 'profile',
+          path: '/profile',
+          builder: (context, params) => const ProfileWidget(),
+        ),
+        FFRoute(
+          name: 'Lebensmittelrettung',
+          path: '/lebensmittelrettung',
+          builder: (context, params) => const LebensmittelrettungWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -88,7 +171,7 @@ class FFParameters {
   // present is the special extra parameter reserved for the transition info.
   bool get isEmpty =>
       state.allParams.isEmpty ||
-      (state.extraMap.length == 1 &&
+      (state.allParams.length == 1 &&
           state.extraMap.containsKey(kTransitionInfoKey));
   bool isAsyncParam(MapEntry<String, dynamic> param) =>
       asyncParams.containsKey(param.key) && param.value is String;
@@ -109,9 +192,10 @@ class FFParameters {
 
   dynamic getParam<T>(
     String paramName,
-    ParamType type, [
+    ParamType type, {
     bool isList = false,
-  ]) {
+    StructBuilder<T>? structBuilder,
+  }) {
     if (futureParamValues.containsKey(paramName)) {
       return futureParamValues[paramName];
     }
@@ -128,6 +212,7 @@ class FFParameters {
       param,
       type,
       isList,
+      structBuilder: structBuilder,
     );
   }
 }
@@ -224,4 +309,14 @@ class RootPageContext {
         value: RootPageContext(true, errorRoute),
         child: child,
       );
+}
+
+extension GoRouterLocationExtension on GoRouter {
+  String getCurrentLocation() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    return matchList.uri.toString();
+  }
 }
