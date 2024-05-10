@@ -42,7 +42,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                 ),
               ),
             )
-          : const LoginPageWidget(),
+          : const HomeTestWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
@@ -57,7 +57,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                     ),
                   ),
                 )
-              : const LoginPageWidget(),
+              : const HomeTestWidget(),
         ),
         FFRoute(
           name: 'LucasTestSeite',
@@ -73,11 +73,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'MensaOverviewPage',
           path: '/mensaOverviewPage',
           builder: (context, params) => const MensaOverviewPageWidget(),
-        ),
-        FFRoute(
-          name: 'manuellerMyAccount',
-          path: '/manuellerMyAccount',
-          builder: (context, params) => const ManuellerMyAccountWidget(),
         ),
         FFRoute(
           name: 'messages',
@@ -123,6 +118,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'Lebensmittelrettung',
           path: '/lebensmittelrettung',
           builder: (context, params) => const LebensmittelrettungWidget(),
+        ),
+        FFRoute(
+          name: 'SuchUmsetzung',
+          path: '/suchUmsetzung',
+          builder: (context, params) => const SuchUmsetzungWidget(),
+        ),
+        FFRoute(
+          name: 'TestCheckbox',
+          path: '/testCheckbox',
+          builder: (context, params) => const TestCheckboxWidget(),
+        ),
+        FFRoute(
+          name: 'settings',
+          path: '/settings',
+          builder: (context, params) => const SettingsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

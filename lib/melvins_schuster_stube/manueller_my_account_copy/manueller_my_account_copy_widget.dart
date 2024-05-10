@@ -180,28 +180,50 @@ class _ManuellerMyAccountCopyWidgetState
                       alignment: const AlignmentDirectional(0.0, -1.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, -1.0),
-                              child: Container(
-                                width: MediaQuery.sizeOf(context).width * 0.35,
-                                height: MediaQuery.sizeOf(context).width * 0.35,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  valueOrDefault<String>(
-                                    manuellerMyAccountCopyGetAllDetailsRowList
-                                        .first.image,
-                                    'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/campus-app-81rhpy/assets/44vdqyecuf5v/default-profile-picture1-300x300.jpg',
+                          Align(
+                            alignment: const AlignmentDirectional(0.0, 0.0),
+                            child: Container(
+                              width: MediaQuery.sizeOf(context).width * 0.32,
+                              height: MediaQuery.sizeOf(context).width * 0.32,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context).accent1,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 4.0,
+                                    color: Color(0x33000000),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
+                                  )
+                                ],
+                                shape: BoxShape.circle,
+                              ),
+                              child: Align(
+                                alignment: const AlignmentDirectional(0.0, 0.0),
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
+                                  height:
+                                      MediaQuery.sizeOf(context).width * 0.3,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
                                   ),
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Image.asset(
-                                    'assets/images/error_image.jpg',
+                                  child: Image.network(
+                                    valueOrDefault<String>(
+                                      manuellerMyAccountCopyGetAllDetailsRowList
+                                          .first.image,
+                                      'https://storage.googleapis.com/flutterflow-io-6f20.appspot.com/projects/campus-app-81rhpy/assets/44vdqyecuf5v/default-profile-picture1-300x300.jpg',
+                                    ),
                                     fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Image.asset(
+                                      'assets/images/error_image.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -220,6 +242,16 @@ class _ManuellerMyAccountCopyWidgetState
                       height: MediaQuery.sizeOf(context).height * 0.08,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
+                        boxShadow: const [
+                          BoxShadow(
+                            blurRadius: 4.0,
+                            color: Color(0x33000000),
+                            offset: Offset(
+                              0.0,
+                              2.0,
+                            ),
+                          )
+                        ],
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Column(
@@ -293,6 +325,16 @@ class _ManuellerMyAccountCopyWidgetState
                         decoration: BoxDecoration(
                           color:
                               FlutterFlowTheme.of(context).secondaryBackground,
+                          boxShadow: const [
+                            BoxShadow(
+                              blurRadius: 4.0,
+                              color: Color(0x33000000),
+                              offset: Offset(
+                                0.0,
+                                2.0,
+                              ),
+                            )
+                          ],
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: Align(

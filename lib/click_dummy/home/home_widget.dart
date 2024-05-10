@@ -133,7 +133,7 @@ class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  context.pushNamed('HomeTest');
+                  context.pushNamed('profile');
                 },
               ),
             ),

@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,11 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
   void initState() {
     super.initState();
     _model = createModel(context, () => HomeTestModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() {});
+    });
 
     animationsMap.addAll({
       'containerOnPageLoadAnimation1': AnimationInfo(
@@ -140,7 +146,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  context.pushNamed('Home');
+                  context.pushNamed('TestCheckbox');
                 },
               ),
             ),
@@ -154,7 +160,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (FFAppState().notificationdata[0].visible)
+                if (FFAppState().widgetdata[0].visible)
                   Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
@@ -543,7 +549,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                     ).animateOnPageLoad(
                         animationsMap['containerOnPageLoadAnimation1']!),
                   ),
-                if (FFAppState().notificationdata[1].visible)
+                if (FFAppState().widgetdata[1].visible)
                   Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
@@ -924,7 +930,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                     ).animateOnPageLoad(
                         animationsMap['containerOnPageLoadAnimation2']!),
                   ),
-                if (FFAppState().notificationdata[2].visible)
+                if (FFAppState().widgetdata[2].visible)
                   Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
