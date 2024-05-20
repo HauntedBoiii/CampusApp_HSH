@@ -1,1 +1,1 @@
-export 'slidetoconfirm.dart' show Slidetoconfirm;
+export 'slide_to_confirm.dart' show SlideToConfirm;

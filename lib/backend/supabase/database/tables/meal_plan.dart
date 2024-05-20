@@ -44,4 +44,7 @@ class MealPlanRow extends SupabaseDataRow {
 
   String get bildUrl => getField<String>('bild_url')!;
   set bildUrl(String value) => setField<String>('bild_url', value);
+
+  String? get brennwert => getField<String>('brennwert');
+  set brennwert(String? value) => setField<String>('brennwert', value);
 }

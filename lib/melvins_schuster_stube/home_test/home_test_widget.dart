@@ -1,9 +1,9 @@
 import '/backend/supabase/supabase.dart';
-import '/click_dummy/dish_card/dish_card_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/pages/click_dummy/dish_card/dish_card_widget.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,12 @@ import 'home_test_model.dart';
 export 'home_test_model.dart';
 
 class HomeTestWidget extends StatefulWidget {
-  const HomeTestWidget({super.key});
+  const HomeTestWidget({
+    super.key,
+    this.visibilationOrder,
+  });
+
+  final List<FoodOrdersRow>? visibilationOrder;
 
   @override
   State<HomeTestWidget> createState() => _HomeTestWidgetState();
@@ -146,7 +151,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  context.pushNamed('TestCheckbox');
+                  context.pushNamed('ProfileSettings');
                 },
               ),
             ),
@@ -160,245 +165,306 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                if (FFAppState().widgetdata[0].visible)
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        context.pushNamed('messages');
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color:
-                              FlutterFlowTheme.of(context).secondaryBackground,
-                          boxShadow: const [
-                            BoxShadow(
-                              blurRadius: 3.0,
-                              color: Color(0x33000000),
-                              offset: Offset(
-                                0.0,
-                                1.0,
-                              ),
-                            )
-                          ],
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 12.0, 5.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 12.0, 12.0, 0.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Mitteilungen',
-                                          style: FlutterFlowTheme.of(context)
-                                              .headlineSmall
-                                              .override(
-                                                fontFamily: 'Roboto',
-                                                letterSpacing: 0.0,
-                                              ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 4.0, 0.0, 0.0),
-                                          child: Text(
-                                            'Angepinnt',
-                                            style: FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Roboto',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 8.0, 0.0),
-                                    child: FutureBuilder<List<MessagesRow>>(
-                                      future: MessagesTable().queryRows(
-                                        queryFn: (q) => q.is_(
-                                          'angepinnt',
-                                          true,
-                                        ),
-                                      ),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 50.0,
-                                              height: 50.0,
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                        List<MessagesRow> badgeMessagesRowList =
-                                            snapshot.data!;
-                                        return badges.Badge(
-                                          badgeContent: Text(
-                                            badgeMessagesRowList.length
-                                                .toString(),
-                                            style: FlutterFlowTheme.of(context)
-                                                .titleSmall
-                                                .override(
-                                                  fontFamily: 'Roboto',
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                ),
-                                          ),
-                                          showBadge: true,
-                                          shape: badges.BadgeShape.circle,
-                                          badgeColor: const Color(0xFF4B39EF),
-                                          elevation: 4.0,
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  9.0, 8.0, 8.0, 8.0),
-                                          position:
-                                              badges.BadgePosition.topEnd(),
-                                          animationType:
-                                              badges.BadgeAnimationType.scale,
-                                          toAnimate: true,
-                                          child: const FaIcon(
-                                            FontAwesomeIcons.bell,
-                                            color: Color(0xFF4B39EF),
-                                            size: 30.0,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
+                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(16.0, 12.0, 16.0, 0.0),
+                  child: FutureBuilder<List<FoodOrdersRow>>(
+                    future: FoodOrdersTable().queryRows(
+                      queryFn: (q) => q,
+                    ),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                FlutterFlowTheme.of(context).primary,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 8.0),
-                              child: FutureBuilder<List<MessagesRow>>(
-                                future: MessagesTable().queryRows(
-                                  queryFn: (q) => q.is_(
-                                    'angepinnt',
-                                    true,
-                                  ),
+                          ),
+                        );
+                      }
+                      List<FoodOrdersRow> taskDetailsFoodOrdersRowList =
+                          snapshot.data!;
+                      return InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          context.pushNamed('Messages');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 3.0,
+                                color: Color(0x33000000),
+                                offset: Offset(
+                                  0.0,
+                                  1.0,
                                 ),
-                                builder: (context, snapshot) {
-                                  // Customize what your widget looks like when it's loading.
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: SizedBox(
-                                        width: 50.0,
-                                        height: 50.0,
-                                        child: CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                            FlutterFlowTheme.of(context)
-                                                .primary,
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 12.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          16.0, 12.0, 12.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Mitteilungen',
+                                            style: FlutterFlowTheme.of(context)
+                                                .headlineSmall
+                                                .override(
+                                                  fontFamily: 'Roboto',
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
-                                        ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 4.0, 0.0, 0.0),
+                                            child: Text(
+                                              'Angepinnt',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily: 'Roboto',
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    );
-                                  }
-                                  List<MessagesRow> listViewMessagesRowList =
-                                      snapshot.data!;
-                                  return ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: listViewMessagesRowList.length,
-                                    itemBuilder: (context, listViewIndex) {
-                                      final listViewMessagesRow =
-                                          listViewMessagesRowList[
-                                              listViewIndex];
-                                      return Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                          border: Border.all(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryBackground,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 8.0, 0.0),
+                                      child: FutureBuilder<List<MessagesRow>>(
+                                        future: MessagesTable().queryRows(
+                                          queryFn: (q) => q.is_(
+                                            'angepinnt',
+                                            true,
                                           ),
                                         ),
-                                        alignment:
-                                            const AlignmentDirectional(-1.0, 0.0),
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 0.0, 0.0, 2.0),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              const SizedBox(
-                                                height: 100.0,
-                                                child: VerticalDivider(
-                                                  width: 24.0,
-                                                  thickness: 4.0,
-                                                  indent: 12.0,
-                                                  endIndent: 12.0,
-                                                  color: Color(0xFF4B39EF),
+                                        builder: (context, snapshot) {
+                                          // Customize what your widget looks like when it's loading.
+                                          if (!snapshot.hasData) {
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 50.0,
+                                                height: 50.0,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                  ),
                                                 ),
                                               ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(0.0, 12.0, 16.0,
-                                                          12.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
+                                            );
+                                          }
+                                          List<MessagesRow>
+                                              badgeMessagesRowList =
+                                              snapshot.data!;
+                                          return badges.Badge(
+                                            badgeContent: Text(
+                                              badgeMessagesRowList.length
+                                                  .toString(),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily: 'Roboto',
+                                                        fontSize: 14.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                            ),
+                                            showBadge: true,
+                                            shape: badges.BadgeShape.circle,
+                                            badgeColor: const Color(0xFF4B39EF),
+                                            elevation: 4.0,
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    9.0, 8.0, 8.0, 8.0),
+                                            position:
+                                                badges.BadgePosition.topEnd(),
+                                            animationType:
+                                                badges.BadgeAnimationType.scale,
+                                            toAnimate: true,
+                                            child: const FaIcon(
+                                              FontAwesomeIcons.bell,
+                                              color: Color(0xFF4B39EF),
+                                              size: 30.0,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 8.0),
+                                child: FutureBuilder<List<MessagesRow>>(
+                                  future: MessagesTable().queryRows(
+                                    queryFn: (q) => q.is_(
+                                      'angepinnt',
+                                      true,
+                                    ),
+                                  ),
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    List<MessagesRow> listViewMessagesRowList =
+                                        snapshot.data!;
+                                    return ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: listViewMessagesRowList.length,
+                                      itemBuilder: (context, listViewIndex) {
+                                        final listViewMessagesRow =
+                                            listViewMessagesRowList[
+                                                listViewIndex];
+                                        return Container(
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                            border: Border.all(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryBackground,
+                                            ),
+                                          ),
+                                          alignment:
+                                              const AlignmentDirectional(-1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 2.0),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 100.0,
+                                                  child: VerticalDivider(
+                                                    width: 24.0,
+                                                    thickness: 4.0,
+                                                    indent: 12.0,
+                                                    endIndent: 12.0,
+                                                    color: Color(0xFF4B39EF),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 12.0,
+                                                                16.0, 12.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              valueOrDefault<
+                                                                  String>(
+                                                                listViewMessagesRow
+                                                                    .tag,
+                                                                'none',
+                                                              ),
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodySmall
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Roboto',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .keyboard_arrow_right_rounded,
+                                                              color: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .secondaryText,
+                                                              size: 24.0,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
                                                             valueOrDefault<
                                                                 String>(
                                                               listViewMessagesRow
-                                                                  .tag,
-                                                              'none',
+                                                                  .titel,
+                                                              'Error',
                                                             ),
                                                             style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .bodySmall
+                                                                .bodyLarge
                                                                 .override(
                                                                   fontFamily:
                                                                       'Roboto',
@@ -406,149 +472,117 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                                                       0.0,
                                                                 ),
                                                           ),
-                                                          Icon(
-                                                            Icons
-                                                                .keyboard_arrow_right_rounded,
-                                                            color: FlutterFlowTheme
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Text(
+                                                            valueOrDefault<
+                                                                String>(
+                                                              listViewMessagesRow
+                                                                  .text,
+                                                              'not found',
+                                                            ),
+                                                            maxLines: 2,
+                                                            style: FlutterFlowTheme
                                                                     .of(context)
-                                                                .secondaryText,
-                                                            size: 24.0,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            listViewMessagesRow
-                                                                .titel,
-                                                            'Error',
-                                                          ),
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyLarge
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Roboto',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          valueOrDefault<
-                                                              String>(
-                                                            listViewMessagesRow
-                                                                .text,
-                                                            'not found',
-                                                          ),
-                                                          maxLines: 2,
-                                                          style: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily:
-                                                                    'Roboto',
-                                                                letterSpacing:
-                                                                    0.0,
-                                                              ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    8.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
-                                                                      .fromSTEB(
-                                                                          0.0,
-                                                                          0.0,
-                                                                          4.0,
-                                                                          0.0),
-                                                              child: Text(
-                                                                'Erstellt:',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Roboto',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                valueOrDefault<
-                                                                    String>(
-                                                                  dateTimeFormat(
-                                                                    'MMMMEEEEd',
-                                                                    listViewMessagesRow
-                                                                        .createdAt,
-                                                                    locale: FFLocalizations.of(
-                                                                            context)
-                                                                        .languageCode,
-                                                                  ),
-                                                                  'today',
+                                                                .bodyMedium
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Roboto',
+                                                                  letterSpacing:
+                                                                      0.0,
                                                                 ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Roboto',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                          ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      8.0,
+                                                                      0.0,
+                                                                      0.0),
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsetsDirectional
+                                                                        .fromSTEB(
+                                                                            0.0,
+                                                                            0.0,
+                                                                            4.0,
+                                                                            0.0),
+                                                                child: Text(
+                                                                  'Erstellt:',
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .labelMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Roboto',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child: Text(
+                                                                  valueOrDefault<
+                                                                      String>(
+                                                                    dateTimeFormat(
+                                                                      'MMMMEEEEd',
+                                                                      listViewMessagesRow
+                                                                          .createdAt,
+                                                                      locale: FFLocalizations.of(
+                                                                              context)
+                                                                          .languageCode,
+                                                                    ),
+                                                                    'today',
+                                                                  ),
+                                                                  style: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .bodyMedium
+                                                                      .override(
+                                                                        fontFamily:
+                                                                            'Roboto',
+                                                                        letterSpacing:
+                                                                            0.0,
+                                                                      ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ).animateOnPageLoad(
-                        animationsMap['containerOnPageLoadAnimation1']!),
+                      ).animateOnPageLoad(
+                          animationsMap['containerOnPageLoadAnimation1']!);
+                    },
                   ),
+                ),
                 if (FFAppState().widgetdata[1].visible)
                   Padding(
                     padding:
@@ -559,7 +593,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () async {
-                        context.pushNamed('MensaAngebot');
+                        context.pushNamed('MensaPlan');
                       },
                       child: Container(
                         width: MediaQuery.sizeOf(context).width * 1.0,
@@ -938,8 +972,8 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                       width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 277.0,
                       decoration: const BoxDecoration(),
-                      child: FutureBuilder<List<LebensmittelRettenRow>>(
-                        future: LebensmittelRettenTable().queryRows(
+                      child: FutureBuilder<List<FoodOffersRow>>(
+                        future: FoodOffersTable().queryRows(
                           queryFn: (q) => q,
                         ),
                         builder: (context, snapshot) {
@@ -957,27 +991,25 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                               ),
                             );
                           }
-                          List<LebensmittelRettenRow>
-                              listViewLebensmittelRettenRowList =
+                          List<FoodOffersRow> listViewFoodOffersRowList =
                               snapshot.data!;
                           return ListView.builder(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.horizontal,
-                            itemCount: listViewLebensmittelRettenRowList.length,
+                            itemCount: listViewFoodOffersRowList.length,
                             itemBuilder: (context, listViewIndex) {
-                              final listViewLebensmittelRettenRow =
-                                  listViewLebensmittelRettenRowList[
-                                      listViewIndex];
+                              final listViewFoodOffersRow =
+                                  listViewFoodOffersRowList[listViewIndex];
                               return DishCardWidget(
                                 key: Key(
-                                    'Key8cg_${listViewIndex}_of_${listViewLebensmittelRettenRowList.length}'),
-                                name: listViewLebensmittelRettenRow.name!,
-                                menge: listViewLebensmittelRettenRow.menge!
-                                    .toString(),
-                                ort: listViewLebensmittelRettenRow.ort!,
-                                preis: listViewLebensmittelRettenRow.preis!,
-                                abholzeit: listViewLebensmittelRettenRow
-                                    .abholzeit!.time,
+                                    'Key8cg_${listViewIndex}_of_${listViewFoodOffersRowList.length}'),
+                                name: listViewFoodOffersRow.name!,
+                                menge:
+                                    listViewFoodOffersRow.quantity!.toString(),
+                                ort: listViewFoodOffersRow.seller!,
+                                preis: listViewFoodOffersRow.price!,
+                                abholzeit:
+                                    listViewFoodOffersRow.pickUpTime!.time,
                               );
                             },
                           );

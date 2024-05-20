@@ -35,6 +35,12 @@ class FFAppState extends ChangeNotifier {
               .toList() ??
           _widgetdata;
     });
+    await _safeInitAsync(() async {
+      _Mensa = await secureStorage.getString('ff_Mensa') ?? _Mensa;
+    });
+    await _safeInitAsync(() async {
+      _UserID = await secureStorage.getString('ff_UserID') ?? _UserID;
+    });
   }
 
   void update(VoidCallback callback) {
@@ -94,6 +100,57 @@ class FFAppState extends ChangeNotifier {
     _widgetdata.insert(index, value);
     secureStorage.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
+  }
+
+  String _Mensa = '';
+  String get Mensa => _Mensa;
+  set Mensa(String value) {
+    _Mensa = value;
+    secureStorage.setString('ff_Mensa', value);
+  }
+
+  void deleteMensa() {
+    secureStorage.delete(key: 'ff_Mensa');
+  }
+
+  String _UserID = '';
+  String get UserID => _UserID;
+  set UserID(String value) {
+    _UserID = value;
+    secureStorage.setString('ff_UserID', value);
+  }
+
+  void deleteUserID() {
+    secureStorage.delete(key: 'ff_UserID');
+  }
+
+  List<CartitemStruct> _shoppingcart = [];
+  List<CartitemStruct> get shoppingcart => _shoppingcart;
+  set shoppingcart(List<CartitemStruct> value) {
+    _shoppingcart = value;
+  }
+
+  void addToShoppingcart(CartitemStruct value) {
+    _shoppingcart.add(value);
+  }
+
+  void removeFromShoppingcart(CartitemStruct value) {
+    _shoppingcart.remove(value);
+  }
+
+  void removeAtIndexFromShoppingcart(int index) {
+    _shoppingcart.removeAt(index);
+  }
+
+  void updateShoppingcartAtIndex(
+    int index,
+    CartitemStruct Function(CartitemStruct) updateFn,
+  ) {
+    _shoppingcart[index] = updateFn(_shoppingcart[index]);
+  }
+
+  void insertAtIndexInShoppingcart(int index, CartitemStruct value) {
+    _shoppingcart.insert(index, value);
   }
 }
 
