@@ -148,7 +148,7 @@ class _ShareWidgetState extends State<ShareWidget> {
                       query: {
                         'subject': widget.eventSharing!.id.toString(),
                         'body':
-                            'campusapp://campusapp.com${GoRouterState.of(context).uri.toString()}',
+                            'campusapp://campusapp.hs-hannover.de${GoRouterState.of(context).uri.toString()}',
                       }
                           .entries
                           .map((MapEntry<String, String> e) =>

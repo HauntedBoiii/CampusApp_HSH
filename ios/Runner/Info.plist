@@ -26,7 +26,7 @@
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>CFBundleURLName</key>
-        <string>campusapp.com</string>
+        <string>campusapp.hs-hannover.de</string>
         <key>CFBundleURLSchemes</key>
         <array>
         <string>campusapp</string>
