@@ -18,18 +18,21 @@ class NotificationDataStruct extends BaseStruct {
   String? _name;
   String get name => _name ?? 'Notification Name';
   set name(String? val) => _name = val;
+
   bool hasName() => _name != null;
 
   // "Descriptrion" field.
   String? _descriptrion;
   String get descriptrion => _descriptrion ?? 'Beschreibung';
   set descriptrion(String? val) => _descriptrion = val;
+
   bool hasDescriptrion() => _descriptrion != null;
 
   // "visible" field.
   bool? _visible;
   bool get visible => _visible ?? false;
   set visible(bool? val) => _visible = val;
+
   bool hasVisible() => _visible != null;
 
   static NotificationDataStruct fromMap(Map<String, dynamic> data) =>

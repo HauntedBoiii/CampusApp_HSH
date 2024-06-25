@@ -3,7 +3,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
-import '/melvins_schuster_stube/adress_change/adress_change_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:auto_size_text/auto_size_text.dart';
@@ -72,25 +71,8 @@ class _ManuellerMyAccountCopyWidgetState
             floatingActionButton: Visibility(
               visible: _model.pageViewCurrentIndex == 0,
               child: FloatingActionButton(
-                onPressed: () async {
-                  await showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    enableDrag: false,
-                    context: context,
-                    builder: (context) {
-                      return GestureDetector(
-                        onTap: () => _model.unfocusNode.canRequestFocus
-                            ? FocusScope.of(context)
-                                .requestFocus(_model.unfocusNode)
-                            : FocusScope.of(context).unfocus(),
-                        child: Padding(
-                          padding: MediaQuery.viewInsetsOf(context),
-                          child: const AdressChangeWidget(),
-                        ),
-                      );
-                    },
-                  ).then((value) => safeSetState(() {}));
+                onPressed: () {
+                  print('FloatingActionButton pressed ...');
                 },
                 backgroundColor: FlutterFlowTheme.of(context).primary,
                 elevation: 8.0,

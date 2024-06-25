@@ -1,5 +1,5 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import '/pages/click_dummy/board_post/board_post_widget.dart';
+import '/pages/campus_app/messages/board_post/board_post_widget.dart';
 import 'such_umsetzung1_widget.dart' show SuchUmsetzung1Widget;
 import 'package:flutter/material.dart';
 

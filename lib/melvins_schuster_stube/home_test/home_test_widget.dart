@@ -3,7 +3,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/pages/click_dummy/dish_card/dish_card_widget.dart';
+import '/pages/campus_app/save_food/dish_card/dish_card_widget.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -424,7 +424,7 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                                               valueOrDefault<
                                                                   String>(
                                                                 listViewMessagesRow
-                                                                    .tag,
+                                                                    .autor,
                                                                 'none',
                                                               ),
                                                               style: FlutterFlowTheme
@@ -669,15 +669,15 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                   ],
                                 ),
                               ),
-                              FutureBuilder<List<MealPlanRow>>(
-                                future: MealPlanTable().queryRows(
+                              FutureBuilder<List<CanteenMealPlanRow>>(
+                                future: CanteenMealPlanTable().queryRows(
                                   queryFn: (q) => q
                                       .eq(
-                                        'mensa',
-                                        'Mensa Campus Linden',
+                                        'canteen_name',
+                                        FFAppState().Mensa,
                                       )
                                       .eq(
-                                        'datum',
+                                        'date',
                                         supaSerialize<DateTime>(
                                             getCurrentTimestamp),
                                       ),
@@ -699,17 +699,19 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                       ),
                                     );
                                   }
-                                  List<MealPlanRow> carouselMealPlanRowList =
+                                  List<CanteenMealPlanRow>
+                                      carouselCanteenMealPlanRowList =
                                       snapshot.data!;
                                   return SizedBox(
                                     width: double.infinity,
                                     height: MediaQuery.sizeOf(context).height *
                                         0.175,
                                     child: CarouselSlider.builder(
-                                      itemCount: carouselMealPlanRowList.length,
+                                      itemCount:
+                                          carouselCanteenMealPlanRowList.length,
                                       itemBuilder: (context, carouselIndex, _) {
-                                        final carouselMealPlanRow =
-                                            carouselMealPlanRowList[
+                                        final carouselCanteenMealPlanRow =
+                                            carouselCanteenMealPlanRowList[
                                                 carouselIndex];
                                         return Padding(
                                           padding:
@@ -761,8 +763,8 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                              carouselMealPlanRow
-                                                                  .kategorie,
+                                                              carouselCanteenMealPlanRow
+                                                                  .category,
                                                               style: FlutterFlowTheme
                                                                       .of(context)
                                                                   .labelSmall
@@ -835,14 +837,23 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                                                   0.0),
                                                       child: SelectionArea(
                                                           child: Text(
-                                                        formatNumber(
-                                                          carouselMealPlanRow
-                                                              .preisStudent,
-                                                          formatType:
-                                                              FormatType.custom,
-                                                          format: '###0.00€',
-                                                          locale: '',
-                                                        ),
+                                                        () {
+                                                          if (FFAppState()
+                                                                  .MensaPriceType ==
+                                                              'Student') {
+                                                            return carouselCanteenMealPlanRow
+                                                                .priceStudent;
+                                                          } else if (FFAppState()
+                                                                  .MensaPriceType ==
+                                                              'Bediensteter') {
+                                                            return carouselCanteenMealPlanRow
+                                                                .priceEmployee;
+                                                          } else {
+                                                            return carouselCanteenMealPlanRow
+                                                                .preisGuest;
+                                                          }
+                                                        }()
+                                                            .toString(),
                                                         textAlign:
                                                             TextAlign.start,
                                                         style: FlutterFlowTheme
@@ -896,8 +907,8 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                                               children: [
                                                                 Expanded(
                                                                   child: Text(
-                                                                    carouselMealPlanRow
-                                                                        .beschreibung,
+                                                                    carouselCanteenMealPlanRow
+                                                                        .description,
                                                                     textAlign:
                                                                         TextAlign
                                                                             .start,
@@ -935,7 +946,8 @@ class _HomeTestWidgetState extends State<HomeTestWidget>
                                             0,
                                             min(
                                                 1,
-                                                carouselMealPlanRowList.length -
+                                                carouselCanteenMealPlanRowList
+                                                        .length -
                                                     1)),
                                         viewportFraction: 1.0,
                                         disableCenter: true,

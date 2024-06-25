@@ -28,53 +28,64 @@ class UserDataStruct extends BaseStruct {
   String? _name;
   String get name => _name ?? '';
   set name(String? val) => _name = val;
+
   bool hasName() => _name != null;
 
   // "Matrikelnummer" field.
   int? _matrikelnummer;
   int get matrikelnummer => _matrikelnummer ?? 0;
   set matrikelnummer(int? val) => _matrikelnummer = val;
+
   void incrementMatrikelnummer(int amount) =>
-      _matrikelnummer = matrikelnummer + amount;
+      matrikelnummer = matrikelnummer + amount;
+
   bool hasMatrikelnummer() => _matrikelnummer != null;
 
   // "Studiengang" field.
   String? _studiengang;
   String get studiengang => _studiengang ?? '';
   set studiengang(String? val) => _studiengang = val;
+
   bool hasStudiengang() => _studiengang != null;
 
   // "Semester" field.
   int? _semester;
   int get semester => _semester ?? 0;
   set semester(int? val) => _semester = val;
-  void incrementSemester(int amount) => _semester = semester + amount;
+
+  void incrementSemester(int amount) => semester = semester + amount;
+
   bool hasSemester() => _semester != null;
 
   // "Strasse" field.
   String? _strasse;
   String get strasse => _strasse ?? '';
   set strasse(String? val) => _strasse = val;
+
   bool hasStrasse() => _strasse != null;
 
   // "Hausnummer" field.
   String? _hausnummer;
   String get hausnummer => _hausnummer ?? '';
   set hausnummer(String? val) => _hausnummer = val;
+
   bool hasHausnummer() => _hausnummer != null;
 
   // "Postleitzahl" field.
   int? _postleitzahl;
   int get postleitzahl => _postleitzahl ?? 0;
   set postleitzahl(int? val) => _postleitzahl = val;
+
   void incrementPostleitzahl(int amount) =>
-      _postleitzahl = postleitzahl + amount;
+      postleitzahl = postleitzahl + amount;
+
   bool hasPostleitzahl() => _postleitzahl != null;
 
   // "Ort" field.
   String? _ort;
   String get ort => _ort ?? '';
   set ort(String? val) => _ort = val;
+
   bool hasOrt() => _ort != null;
 
   static UserDataStruct fromMap(Map<String, dynamic> data) => UserDataStruct(

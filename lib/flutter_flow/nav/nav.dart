@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/backend/schema/structs/index.dart';
-
 import '/backend/supabase/supabase.dart';
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -83,24 +83,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               appStateNotifier.loggedIn ? const HomeWidget() : const LoginPageCopyWidget(),
         ),
         FFRoute(
-          name: 'LucasTestSeite',
-          path: '/lucasTestSeite',
-          builder: (context, params) => const LucasTestSeiteWidget(),
-        ),
-        FFRoute(
           name: 'MensaPlan',
           path: '/mensaPlan',
           builder: (context, params) => const MensaPlanWidget(),
-        ),
-        FFRoute(
-          name: 'MensaOverviewPage',
-          path: '/mensaOverviewPage',
-          builder: (context, params) => const MensaOverviewPageWidget(),
-        ),
-        FFRoute(
-          name: 'Messages',
-          path: '/messages',
-          builder: (context, params) => const MessagesWidget(),
         ),
         FFRoute(
           name: 'LoginPage_v1',
@@ -124,9 +109,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const CreatePostCopyWidget(),
         ),
         FFRoute(
-          name: 'NewPost',
-          path: '/newPost',
-          builder: (context, params) => const NewPostWidget(),
+          name: 'NewMessageOld',
+          path: '/newMessageOld',
+          builder: (context, params) => const NewMessageOldWidget(),
         ),
         FFRoute(
           name: 'Home',
@@ -144,11 +129,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const ProfileWidget(),
         ),
         FFRoute(
-          name: 'Lebensmittelrettung',
-          path: '/lebensmittelrettung',
-          builder: (context, params) => const LebensmittelrettungWidget(),
-        ),
-        FFRoute(
           name: 'SuchUmsetzung1',
           path: '/suchUmsetzung1',
           builder: (context, params) => const SuchUmsetzung1Widget(),
@@ -159,14 +139,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const ProfileSettingsWidget(),
         ),
         FFRoute(
-          name: 'SpareFood',
-          path: '/spareFood',
-          builder: (context, params) => const SpareFoodWidget(),
+          name: 'SaveFood',
+          path: '/saveFood',
+          builder: (context, params) => const SaveFoodWidget(),
         ),
         FFRoute(
           name: 'SucessPage',
           path: '/sucessPage',
-          builder: (context, params) => const SucessPageWidget(),
+          builder: (context, params) => SucessPageWidget(
+            total: params.getParam(
+              'total',
+              ParamType.double,
+            ),
+          ),
         ),
         FFRoute(
           name: 'LoginPageCopy',
@@ -189,9 +174,89 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const SuchUmsetzung2Copy2Widget(),
         ),
         FFRoute(
-          name: 'MessagesLucaTest',
-          path: '/messagesLucaTest',
-          builder: (context, params) => const MessagesLucaTestWidget(),
+          name: 'Messages',
+          path: '/messages',
+          builder: (context, params) => const MessagesWidget(),
+        ),
+        FFRoute(
+          name: 'UserManagement',
+          path: '/userManagement',
+          builder: (context, params) => const UserManagementWidget(),
+        ),
+        FFRoute(
+          name: 'MessageTagManagement',
+          path: '/messageTagManagement',
+          builder: (context, params) => const MessageTagManagementWidget(),
+        ),
+        FFRoute(
+          name: 'MeineAnzeigen',
+          path: '/meineAnzeigen',
+          builder: (context, params) => const MeineAnzeigenWidget(),
+        ),
+        FFRoute(
+          name: 'produktdetailsErsteller',
+          path: '/produktdetailsErsteller',
+          builder: (context, params) => ProduktdetailsErstellerWidget(
+            productId: params.getParam(
+              'productId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'CampusMart',
+          path: '/campusMart',
+          builder: (context, params) => const CampusMartWidget(),
+        ),
+        FFRoute(
+          name: 'SaveFoodManageOffers',
+          path: '/saveFoodManageOffers',
+          builder: (context, params) => const SaveFoodManageOffersWidget(),
+        ),
+        FFRoute(
+          name: 'NewMessageCopy',
+          path: '/newMessageCopy',
+          builder: (context, params) => const NewMessageCopyWidget(),
+        ),
+        FFRoute(
+          name: 'produktdetails',
+          path: '/produktdetails',
+          builder: (context, params) => ProduktdetailsWidget(
+            productId: params.getParam(
+              'productId',
+              ParamType.int,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'EventKalender',
+          path: '/eventKalender',
+          builder: (context, params) => const EventKalenderWidget(),
+        ),
+        FFRoute(
+          name: 'EventCreator',
+          path: '/eventCreator',
+          builder: (context, params) => const EventCreatorWidget(),
+        ),
+        FFRoute(
+          name: 'TestTag',
+          path: '/testTag',
+          builder: (context, params) => const TestTagWidget(),
+        ),
+        FFRoute(
+          name: 'NewMessage',
+          path: '/newMessage',
+          builder: (context, params) => const NewMessageWidget(),
+        ),
+        FFRoute(
+          name: 'MessagesCopy',
+          path: '/messagesCopy',
+          builder: (context, params) => const MessagesCopyWidget(),
+        ),
+        FFRoute(
+          name: 'Credits',
+          path: '/credits',
+          builder: (context, params) => const CreditsWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -377,10 +442,13 @@ class FFRoute {
               : builder(context, ffParams);
           final child = appStateNotifier.loading
               ? Container(
-                  color: Colors.transparent,
-                  child: Image.asset(
-                    'assets/images/6325254.jpg',
-                    fit: BoxFit.contain,
+                  color: FlutterFlowTheme.of(context).primaryBtnText,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/HsH_Logo.svg.png',
+                      width: MediaQuery.sizeOf(context).width * 0.9,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 )
               : page;

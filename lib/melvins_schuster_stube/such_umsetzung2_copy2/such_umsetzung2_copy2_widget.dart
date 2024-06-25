@@ -2,8 +2,8 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/pages/click_dummy/board_post/board_post_widget.dart';
-import '/pages/click_dummy/cmp_filter/cmp_filter_widget.dart';
+import '/pages/campus_app/messages/board_post/board_post_widget.dart';
+import '/pages/campus_app/messages/cmp_filter/cmp_filter_widget.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,7 +50,7 @@ class _SuchUmsetzung2Copy2WidgetState extends State<SuchUmsetzung2Copy2Widget> {
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            context.pushNamed('NewPost');
+            context.pushNamed('NewMessageOld');
           },
           backgroundColor: FlutterFlowTheme.of(context).primary,
           elevation: 8.0,
@@ -282,10 +282,10 @@ class _SuchUmsetzung2Copy2WidgetState extends State<SuchUmsetzung2Copy2Widget> {
                                     userItemsItem,
                                     r'''$.text''',
                                   ).toString(),
-                                  tag: getJsonField(
+                                  messageID: getJsonField(
                                     userItemsItem,
                                     r'''$.tag''',
-                                  ).toString(),
+                                  ),
                                   date: getCurrentTimestamp,
                                   angepinnt: getJsonField(
                                     userItemsItem,

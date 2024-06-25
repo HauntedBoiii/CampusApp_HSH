@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '/backend/schema/structs/index.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:csv/csv.dart';
-import 'package:synchronized/synchronized.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
 class FFAppState extends ChangeNotifier {
@@ -19,9 +17,10 @@ class FFAppState extends ChangeNotifier {
   }
 
   Future initializePersistedState() async {
-    secureStorage = const FlutterSecureStorage();
-    await _safeInitAsync(() async {
-      _widgetdata = (await secureStorage.getStringList('ff_widgetdata'))
+    prefs = await SharedPreferences.getInstance();
+    _safeInit(() {
+      _widgetdata = prefs
+              .getStringList('ff_widgetdata')
               ?.map((x) {
                 try {
                   return NotificationDataStruct.fromSerializableMap(
@@ -35,11 +34,29 @@ class FFAppState extends ChangeNotifier {
               .toList() ??
           _widgetdata;
     });
-    await _safeInitAsync(() async {
-      _Mensa = await secureStorage.getString('ff_Mensa') ?? _Mensa;
+    _safeInit(() {
+      _Mensa = prefs.getString('ff_Mensa') ?? _Mensa;
     });
-    await _safeInitAsync(() async {
-      _UserID = await secureStorage.getString('ff_UserID') ?? _UserID;
+    _safeInit(() {
+      _UserID = prefs.getString('ff_UserID') ?? _UserID;
+    });
+    _safeInit(() {
+      _MensaPriceType = prefs.getString('ff_MensaPriceType') ?? _MensaPriceType;
+    });
+    _safeInit(() {
+      _FoodLabel = prefs
+              .getStringList('ff_FoodLabel')
+              ?.map((x) {
+                try {
+                  return FoodLabelStruct.fromSerializableMap(jsonDecode(x));
+                } catch (e) {
+                  print("Can't decode persisted data type. Error: $e.");
+                  return null;
+                }
+              })
+              .withoutNulls
+              .toList() ??
+          _FoodLabel;
     });
   }
 
@@ -48,7 +65,7 @@ class FFAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  late FlutterSecureStorage secureStorage;
+  late SharedPreferences prefs;
 
   List<NotificationDataStruct> _widgetdata = [
     NotificationDataStruct.fromSerializableMap(jsonDecode(
@@ -56,34 +73,34 @@ class FFAppState extends ChangeNotifier {
     NotificationDataStruct.fromSerializableMap(jsonDecode(
         '{\"Name\":\"Mensaplan\",\"Descriptrion\":\"Speiseplan der Mensa\",\"visible\":\"true\"}')),
     NotificationDataStruct.fromSerializableMap(jsonDecode(
-        '{\"Name\":\"Essensrettung\",\"Descriptrion\":\"Wie TooGoodToGo\",\"visible\":\"true\"}'))
+        '{\"Name\":\"Essensrettung\",\"Descriptrion\":\"Wie TooGoodToGo\",\"visible\":\"true\"}')),
+    NotificationDataStruct.fromSerializableMap(jsonDecode(
+        '{\"Name\":\"Eventklalender\",\"Descriptrion\":\"Hochschulevents\",\"visible\":\"true\"}')),
+    NotificationDataStruct.fromSerializableMap(jsonDecode(
+        '{\"Name\":\"Campusmarkt\",\"Descriptrion\":\"wie Ebay\",\"visible\":\"true\"}'))
   ];
   List<NotificationDataStruct> get widgetdata => _widgetdata;
   set widgetdata(List<NotificationDataStruct> value) {
     _widgetdata = value;
-    secureStorage.setStringList(
+    prefs.setStringList(
         'ff_widgetdata', value.map((x) => x.serialize()).toList());
   }
 
-  void deleteWidgetdata() {
-    secureStorage.delete(key: 'ff_widgetdata');
-  }
-
   void addToWidgetdata(NotificationDataStruct value) {
-    _widgetdata.add(value);
-    secureStorage.setStringList(
+    widgetdata.add(value);
+    prefs.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
   }
 
   void removeFromWidgetdata(NotificationDataStruct value) {
-    _widgetdata.remove(value);
-    secureStorage.setStringList(
+    widgetdata.remove(value);
+    prefs.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
   }
 
   void removeAtIndexFromWidgetdata(int index) {
-    _widgetdata.removeAt(index);
-    secureStorage.setStringList(
+    widgetdata.removeAt(index);
+    prefs.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
   }
 
@@ -91,37 +108,29 @@ class FFAppState extends ChangeNotifier {
     int index,
     NotificationDataStruct Function(NotificationDataStruct) updateFn,
   ) {
-    _widgetdata[index] = updateFn(_widgetdata[index]);
-    secureStorage.setStringList(
+    widgetdata[index] = updateFn(_widgetdata[index]);
+    prefs.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
   }
 
   void insertAtIndexInWidgetdata(int index, NotificationDataStruct value) {
-    _widgetdata.insert(index, value);
-    secureStorage.setStringList(
+    widgetdata.insert(index, value);
+    prefs.setStringList(
         'ff_widgetdata', _widgetdata.map((x) => x.serialize()).toList());
   }
 
-  String _Mensa = '';
+  String _Mensa = 'Mensa Campus Linden';
   String get Mensa => _Mensa;
   set Mensa(String value) {
     _Mensa = value;
-    secureStorage.setString('ff_Mensa', value);
-  }
-
-  void deleteMensa() {
-    secureStorage.delete(key: 'ff_Mensa');
+    prefs.setString('ff_Mensa', value);
   }
 
   String _UserID = '';
   String get UserID => _UserID;
   set UserID(String value) {
     _UserID = value;
-    secureStorage.setString('ff_UserID', value);
-  }
-
-  void deleteUserID() {
-    secureStorage.delete(key: 'ff_UserID');
+    prefs.setString('ff_UserID', value);
   }
 
   List<CartitemStruct> _shoppingcart = [];
@@ -131,26 +140,185 @@ class FFAppState extends ChangeNotifier {
   }
 
   void addToShoppingcart(CartitemStruct value) {
-    _shoppingcart.add(value);
+    shoppingcart.add(value);
   }
 
   void removeFromShoppingcart(CartitemStruct value) {
-    _shoppingcart.remove(value);
+    shoppingcart.remove(value);
   }
 
   void removeAtIndexFromShoppingcart(int index) {
-    _shoppingcart.removeAt(index);
+    shoppingcart.removeAt(index);
   }
 
   void updateShoppingcartAtIndex(
     int index,
     CartitemStruct Function(CartitemStruct) updateFn,
   ) {
-    _shoppingcart[index] = updateFn(_shoppingcart[index]);
+    shoppingcart[index] = updateFn(_shoppingcart[index]);
   }
 
   void insertAtIndexInShoppingcart(int index, CartitemStruct value) {
-    _shoppingcart.insert(index, value);
+    shoppingcart.insert(index, value);
+  }
+
+  String _MensaPriceType = 'Student';
+  String get MensaPriceType => _MensaPriceType;
+  set MensaPriceType(String value) {
+    _MensaPriceType = value;
+    prefs.setString('ff_MensaPriceType', value);
+  }
+
+  int _eventCreatedID = 0;
+  int get eventCreatedID => _eventCreatedID;
+  set eventCreatedID(int value) {
+    _eventCreatedID = value;
+  }
+
+  List<FoodLabelStruct> _FoodLabel = [
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"103\",\"ShortName\":\"kt\",\"Description\":\"KlimaTeller\",\"IconSymbol\":\"w\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"104\",\"ShortName\":\"m\",\"Description\":\"Gesund&Munter\",\"IconSymbol\":\"m\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"98\",\"ShortName\":\"x\",\"Description\":\"vegan\",\"IconSymbol\":\"x\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"85\",\"ShortName\":\"\",\"Description\":\"kakaohaltige Fettglasur\",\"IconSymbol\":\"P\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"34\",\"ShortName\":\"20A\",\"Description\":\"enthält Glutenhaltiges Getreide: Weizen\",\"IconSymbol\":\":\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"40\",\"ShortName\":\"27J\",\"Description\":\"enthält Schalenfrüchte: Mandeln\",\"IconSymbol\":\"@\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"35\",\"ShortName\":\"20B\",\"Description\":\"enthält Glutenhaltiges Getreide: Roggen\",\"IconSymbol\":\";\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"36\",\"ShortName\":\"20C\",\"Description\":\"enthält Glutenhaltiges Getreide: Gerste\",\"IconSymbol\":\"=\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"37\",\"ShortName\":\"20D\",\"Description\":\"enthält Glutenhaltiges Getreide: Hafer\",\"IconSymbol\":\">\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"38\",\"ShortName\":\"20E\",\"Description\":\"enthält Glutenhaltiges Getreide: Dinkel\",\"IconSymbol\":\"<\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"39\",\"ShortName\":\"20F\",\"Description\":\"enthält Glutenhaltiges Getreide: Kamut\",\"IconSymbol\":\"?\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"41\",\"ShortName\":\"27K\",\"Description\":\"enthält Schalenfrüchte: Haselnüsse\",\"IconSymbol\":\"B\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"42\",\"ShortName\":\"27L\",\"Description\":\"enthält Schalenfrüchte: Walnüsse\",\"IconSymbol\":\"C\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"43\",\"ShortName\":\"27M\",\"Description\":\"enthält Schalenfrüchte: Kaschunüsse\",\"IconSymbol\":\"D\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"44\",\"ShortName\":\"27N\",\"Description\":\"enthält Schalenfrüchte: Pecannüsse\",\"IconSymbol\":\"E\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"45\",\"ShortName\":\"27O\",\"Description\":\"enthält Schalenfrüchte: Paranüsse\",\"IconSymbol\":\"H\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"46\",\"ShortName\":\"27P\",\"Description\":\"enthält Schalenfrüchte: Pistazien\",\"IconSymbol\":\"I\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"47\",\"ShortName\":\"27Q\",\"Description\":\"enthält Schalenfrüchte: Macadamianüsse\",\"IconSymbol\":\"L\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"87\",\"ShortName\":\"\",\"Description\":\"aus Formfleisch zusammengefügt\",\"IconSymbol\":\"z\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"100\",\"ShortName\":\"f\",\"Description\":\"nachhaltige Fischerei / sustainable fishery\",\"IconSymbol\":\"f\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"12\",\"ShortName\":\"\",\"Description\":\"mit Nitritpökelsalz und Nitrat\",\"IconSymbol\":\"\\\"\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"91\",\"ShortName\":\"s\",\"Description\":\"enthält Schweinefleisch / pork\",\"IconSymbol\":\"s\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"92\",\"ShortName\":\"r\",\"Description\":\"enthält Rindfleisch / beef\",\"IconSymbol\":\"r\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"93\",\"ShortName\":\"v\",\"Description\":\"ohne Fleisch / without meat\",\"IconSymbol\":\"v\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"2\",\"ShortName\":\"\",\"Description\":\"mit Konservierungsstoff / preservative\",\"IconSymbol\":\"2\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"3\",\"ShortName\":\"\",\"Description\":\"mit Antioxidationsmittel / antioxidant\",\"IconSymbol\":\"3\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"4\",\"ShortName\":\"\",\"Description\":\"mit Geschmacksverstärker / flavour enhancer\",\"IconSymbol\":\"4\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"5\",\"ShortName\":\"\",\"Description\":\"geschwefelt / sulphite\",\"IconSymbol\":\"5\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"6\",\"ShortName\":\"\",\"Description\":\"geschwärzt / firming agent\",\"IconSymbol\":\"6\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"7\",\"ShortName\":\"\",\"Description\":\"gewachst / glazing agent\",\"IconSymbol\":\"7\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"8\",\"ShortName\":\"\",\"Description\":\"mit Phosphat / phosphate\",\"IconSymbol\":\"8\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"9\",\"ShortName\":\"\",\"Description\":\"mit Süßungsmittel / sweetener\",\"IconSymbol\":\"9\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"10\",\"ShortName\":\"\",\"Description\":\"enthält eine Phenylalaninquelle\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"11\",\"ShortName\":\"\",\"Description\":\"mit einer Zuckerart u. Süßungsmittel\",\"IconSymbol\":\"!\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"22\",\"ShortName\":\"\",\"Description\":\"enthält Eier und Eiererzeugnisse\",\"IconSymbol\":\"%\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"1\",\"ShortName\":\"\",\"Description\":\"mit Farbstoff / color\",\"IconSymbol\":\"1\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"23\",\"ShortName\":\"\",\"Description\":\"enthält Fisch und Fischerzeugnisse\",\"IconSymbol\":\"&\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"24\",\"ShortName\":\"\",\"Description\":\"enthält Erdnüsse und Erdnusserzeugnisse\",\"IconSymbol\":\"\'\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"96\",\"ShortName\":\"j\",\"Description\":\"artger. Tierhaltung / species-appropr. husbandry\",\"IconSymbol\":\"j\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"97\",\"ShortName\":\"a\",\"Description\":\"mit Alkohol / contains alcohol\",\"IconSymbol\":\"a\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"25\",\"ShortName\":\"\",\"Description\":\"enthält Soja und Sojaerzeugnisse\",\"IconSymbol\":\"(\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"26\",\"ShortName\":\"\",\"Description\":\"enthält Milch und Milcherzeugnisse\",\"IconSymbol\":\")\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"28\",\"ShortName\":\"\",\"Description\":\"enthält Sellerie und Sellerieerzeugnisse\",\"IconSymbol\":\"+\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"29\",\"ShortName\":\"\",\"Description\":\"enthält Senf und Senferzeugnisse\",\"IconSymbol\":\",\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"30\",\"ShortName\":\"\",\"Description\":\"enthält Sesamsamen & Sesamsamenerzeugn.\",\"IconSymbol\":\"-­­\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"19\",\"ShortName\":\"k\",\"Description\":\"mit Knoblauch / contains garlic\",\"IconSymbol\":\"k\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"102\",\"ShortName\":\"n\",\"Description\":\"Natürlich frisch! / natural(ly) fresh!\",\"IconSymbol\":\"n\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"21\",\"ShortName\":\"\",\"Description\":\"enthält Krebstiere und Krebstiererzeugnisse\",\"IconSymbol\":\"\$\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"31\",\"ShortName\":\"\",\"Description\":\"enthält Schwefeldioxid und Sulfite > 10 mg/kg\",\"IconSymbol\":\".\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"32\",\"ShortName\":\"\",\"Description\":\"enthält Lupine und Lupinenerzeugnisse\",\"IconSymbol\":\"/\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"33\",\"ShortName\":\"\",\"Description\":\"enthält Weichtiere und Weichtiererzeugnisse\",\"IconSymbol\":\"0\"}')),
+    FoodLabelStruct.fromSerializableMap(jsonDecode(
+        '{\"ID\":\"90\",\"ShortName\":\"g\",\"Description\":\"enthält Geflügelfleisch\",\"IconSymbol\":\"g\"}'))
+  ];
+  List<FoodLabelStruct> get FoodLabel => _FoodLabel;
+  set FoodLabel(List<FoodLabelStruct> value) {
+    _FoodLabel = value;
+    prefs.setStringList(
+        'ff_FoodLabel', value.map((x) => x.serialize()).toList());
+  }
+
+  void addToFoodLabel(FoodLabelStruct value) {
+    FoodLabel.add(value);
+    prefs.setStringList(
+        'ff_FoodLabel', _FoodLabel.map((x) => x.serialize()).toList());
+  }
+
+  void removeFromFoodLabel(FoodLabelStruct value) {
+    FoodLabel.remove(value);
+    prefs.setStringList(
+        'ff_FoodLabel', _FoodLabel.map((x) => x.serialize()).toList());
+  }
+
+  void removeAtIndexFromFoodLabel(int index) {
+    FoodLabel.removeAt(index);
+    prefs.setStringList(
+        'ff_FoodLabel', _FoodLabel.map((x) => x.serialize()).toList());
+  }
+
+  void updateFoodLabelAtIndex(
+    int index,
+    FoodLabelStruct Function(FoodLabelStruct) updateFn,
+  ) {
+    FoodLabel[index] = updateFn(_FoodLabel[index]);
+    prefs.setStringList(
+        'ff_FoodLabel', _FoodLabel.map((x) => x.serialize()).toList());
+  }
+
+  void insertAtIndexInFoodLabel(int index, FoodLabelStruct value) {
+    FoodLabel.insert(index, value);
+    prefs.setStringList(
+        'ff_FoodLabel', _FoodLabel.map((x) => x.serialize()).toList());
   }
 }
 
@@ -164,47 +332,4 @@ Future _safeInitAsync(Function() initializeField) async {
   try {
     await initializeField();
   } catch (_) {}
-}
-
-extension FlutterSecureStorageExtensions on FlutterSecureStorage {
-  static final _lock = Lock();
-
-  Future<void> writeSync({required String key, String? value}) async =>
-      await _lock.synchronized(() async {
-        await write(key: key, value: value);
-      });
-
-  void remove(String key) => delete(key: key);
-
-  Future<String?> getString(String key) async => await read(key: key);
-  Future<void> setString(String key, String value) async =>
-      await writeSync(key: key, value: value);
-
-  Future<bool?> getBool(String key) async => (await read(key: key)) == 'true';
-  Future<void> setBool(String key, bool value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<int?> getInt(String key) async =>
-      int.tryParse(await read(key: key) ?? '');
-  Future<void> setInt(String key, int value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<double?> getDouble(String key) async =>
-      double.tryParse(await read(key: key) ?? '');
-  Future<void> setDouble(String key, double value) async =>
-      await writeSync(key: key, value: value.toString());
-
-  Future<List<String>?> getStringList(String key) async =>
-      await read(key: key).then((result) {
-        if (result == null || result.isEmpty) {
-          return null;
-        }
-        return const CsvToListConverter()
-            .convert(result)
-            .first
-            .map((e) => e.toString())
-            .toList();
-      });
-  Future<void> setStringList(String key, List<String> value) async =>
-      await writeSync(key: key, value: const ListToCsvConverter().convert([value]));
 }

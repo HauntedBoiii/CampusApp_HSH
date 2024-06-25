@@ -31,7 +31,4 @@ class MessagesRow extends SupabaseDataRow {
 
   bool get angepinnt => getField<bool>('angepinnt')!;
   set angepinnt(bool value) => setField<bool>('angepinnt', value);
-
-  String? get tag => getField<String>('tag');
-  set tag(String? value) => setField<String>('tag', value);
 }

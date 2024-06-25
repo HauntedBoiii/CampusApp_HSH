@@ -34,4 +34,10 @@ class EventsRow extends SupabaseDataRow {
 
   PostgresTime? get end => getField<PostgresTime>('end');
   set end(PostgresTime? value) => setField<PostgresTime>('end', value);
+
+  String? get description => getField<String>('description');
+  set description(String? value) => setField<String>('description', value);
+
+  String? get location => getField<String>('location');
+  set location(String? value) => setField<String>('location', value);
 }

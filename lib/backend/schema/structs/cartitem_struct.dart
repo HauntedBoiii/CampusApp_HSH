@@ -16,14 +16,18 @@ class CartitemStruct extends BaseStruct {
   int? _offerid;
   int get offerid => _offerid ?? 0;
   set offerid(int? val) => _offerid = val;
-  void incrementOfferid(int amount) => _offerid = offerid + amount;
+
+  void incrementOfferid(int amount) => offerid = offerid + amount;
+
   bool hasOfferid() => _offerid != null;
 
   // "quantity" field.
   int? _quantity;
   int get quantity => _quantity ?? 0;
   set quantity(int? val) => _quantity = val;
-  void incrementQuantity(int amount) => _quantity = quantity + amount;
+
+  void incrementQuantity(int amount) => quantity = quantity + amount;
+
   bool hasQuantity() => _quantity != null;
 
   static CartitemStruct fromMap(Map<String, dynamic> data) => CartitemStruct(
