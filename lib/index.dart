@@ -1,60 +1,42 @@
 // Export pages
-export '/pages/campus_app/canteen_plan/mensa_plan/mensa_plan_widget.dart'
-    show MensaPlanWidget;
-export '/melvins_schuster_stube/login_page_v1/login_page_v1_widget.dart'
-    show LoginPageV1Widget;
-export '/melvins_schuster_stube/home_test/home_test_widget.dart'
-    show HomeTestWidget;
-export '/vero/create_post_copy/create_post_copy_widget.dart'
-    show CreatePostCopyWidget;
-export '/melvins_schuster_stube/new_message_old/new_message_old_widget.dart'
-    show NewMessageOldWidget;
-export '/pages/campus_app/home/home/home_widget.dart' show HomeWidget;
-export '/melvins_schuster_stube/manueller_my_account_copy/manueller_my_account_copy_widget.dart'
-    show ManuellerMyAccountCopyWidget;
-export '/pages/campus_app/home/profile/profile_widget.dart' show ProfileWidget;
-export '/vero/such_umsetzung1/such_umsetzung1_widget.dart'
-    show SuchUmsetzung1Widget;
-export '/pages/campus_app/home/profile_settings/profile_settings_widget.dart'
-    show ProfileSettingsWidget;
-export '/pages/campus_app/save_food/save_food/save_food_widget.dart'
-    show SaveFoodWidget;
-export '/pages/campus_app/save_food/sucess_page/sucess_page_widget.dart'
-    show SucessPageWidget;
-export '/pages/campus_app/home/login_page_copy/login_page_copy_widget.dart'
-    show LoginPageCopyWidget;
-export '/vero/such_umsetzung2/such_umsetzung2_widget.dart'
-    show SuchUmsetzung2Widget;
-export '/pages/campus_app/messages/such_umsetzung2_copy/such_umsetzung2_copy_widget.dart'
-    show SuchUmsetzung2CopyWidget;
-export '/melvins_schuster_stube/such_umsetzung2_copy2/such_umsetzung2_copy2_widget.dart'
-    show SuchUmsetzung2Copy2Widget;
-export '/pages/campus_app/messages/messages/messages_widget.dart'
-    show MessagesWidget;
-export '/pages/campus_app/home/user_management/user_management_widget.dart'
-    show UserManagementWidget;
-export '/pages/campus_app/messages/message_tag_management/message_tag_management_widget.dart'
-    show MessageTagManagementWidget;
-export '/gruppe_1_marketplace/meine_anzeigen/meine_anzeigen_widget.dart'
+export '/pages/campus_app/canteen_plan/canteen_plan_page/canteen_plan_page_widget.dart'
+    show CanteenPlanPageWidget;
+export '/pages/campus_app/home/home_page/home_page_widget.dart'
+    show HomePageWidget;
+export '/pages/campus_app/home/profile_page/profile_page_widget.dart'
+    show ProfilePageWidget;
+export '/pages/campus_app/home/profile_settings_page/profile_settings_page_widget.dart'
+    show ProfileSettingsPageWidget;
+export '/pages/campus_app/save_food/savefood_home_page/savefood_home_page_widget.dart'
+    show SavefoodHomePageWidget;
+export '/pages/campus_app/save_food/savefood_offer_success_page/savefood_offer_success_page_widget.dart'
+    show SavefoodOfferSuccessPageWidget;
+export '/pages/campus_app/home/login_register_page/login_register_page_widget.dart'
+    show LoginRegisterPageWidget;
+export '/pages/campus_app/messages/c_a_n_b_e_d_e_l_e_t_e_d_such_umsetzung2_copy/c_a_n_b_e_d_e_l_e_t_e_d_such_umsetzung2_copy_widget.dart'
+    show CANBEDELETEDSuchUmsetzung2CopyWidget;
+export '/pages/campus_app/messages/messages_display_page/messages_display_page_widget.dart'
+    show MessagesDisplayPageWidget;
+export '/pages/campus_app/home/user_management_page/user_management_page_widget.dart'
+    show UserManagementPageWidget;
+export '/pages/campus_app/messages/tag_management_page/tag_management_page_widget.dart'
+    show TagManagementPageWidget;
+export '/pages/campus_app/gruppe_1_marketplace/meine_anzeigen/meine_anzeigen_widget.dart'
     show MeineAnzeigenWidget;
-export '/gruppe_1_marketplace/produktdetails_ersteller/produktdetails_ersteller_widget.dart'
+export '/pages/campus_app/gruppe_1_marketplace/produktdetails_ersteller/produktdetails_ersteller_widget.dart'
     show ProduktdetailsErstellerWidget;
-export '/gruppe_1_marketplace/campus_mart/campus_mart_widget.dart'
+export '/pages/campus_app/gruppe_1_marketplace/campus_mart/campus_mart_widget.dart'
     show CampusMartWidget;
-export '/pages/campus_app/save_food/save_food_manage_offers/save_food_manage_offers_widget.dart'
-    show SaveFoodManageOffersWidget;
-export '/vero/new_message_copy/new_message_copy_widget.dart'
-    show NewMessageCopyWidget;
-export '/gruppe_1_marketplace/produktdetails/produktdetails_widget.dart'
+export '/pages/campus_app/save_food/savefood_offer_management_page/savefood_offer_management_page_widget.dart'
+    show SavefoodOfferManagementPageWidget;
+export '/pages/campus_app/gruppe_1_marketplace/produktdetails/produktdetails_widget.dart'
     show ProduktdetailsWidget;
-export '/gruppe_2_kalender/event_kalender/event_kalender_widget.dart'
+export '/pages/campus_app/gruppe_2_kalender/event_kalender/event_kalender_widget.dart'
     show EventKalenderWidget;
-export '/gruppe_2_kalender/event_creator/event_creator_widget.dart'
+export '/pages/campus_app/gruppe_2_kalender/event_creator/event_creator_widget.dart'
     show EventCreatorWidget;
-export '/melvins_schuster_stube/test_tag/test_tag_widget.dart'
-    show TestTagWidget;
-export '/pages/campus_app/messages/new_message/new_message_widget.dart'
-    show NewMessageWidget;
-export '/melvins_schuster_stube/messages_copy/messages_copy_widget.dart'
-    show MessagesCopyWidget;
-export '/fynn_baut_zeugs/credits/credits_widget.dart' show CreditsWidget;
+export '/pages/campus_app/messages/message_new_page/message_new_page_widget.dart'
+    show MessageNewPageWidget;
+export '/pages/campus_app/home/credits/credits_widget.dart' show CreditsWidget;
+export '/pages/campus_app/messages/c_a_n_b_e_d_e_l_e_t_e_d_messages_copy2/c_a_n_b_e_d_e_l_e_t_e_d_messages_copy2_widget.dart'
+    show CANBEDELETEDMessagesCopy2Widget;

@@ -107,3 +107,23 @@ String capitalize(String s) {
   }
   return s.substring(0, 1).toUpperCase() + s.substring(1);
 }
+
+double getOrderTotal(
+  List<SavefoodOrderRow> order,
+  List<SavefoodOfferRow> offers,
+) {
+  double total = 0;
+  for (int i = 0; i < order.length; i++) {
+    total = total +
+        offers.singleWhere((offer) => offer.id == order[i].offerId).price! *
+            order[i].quantity!;
+  }
+  return total;
+}
+
+double? getSumOfItem(
+  double price,
+  int quantity,
+) {
+  return price * quantity;
+}

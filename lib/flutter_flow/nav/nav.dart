@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '/backend/schema/structs/index.dart';
-import '/backend/supabase/supabase.dart';
 import '/auth/base_auth_user_provider.dart';
 
 import '/index.dart';
@@ -73,80 +72,46 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const HomeWidget() : const LoginPageCopyWidget(),
+      errorBuilder: (context, state) => appStateNotifier.loggedIn
+          ? const HomePageWidget()
+          : const LoginRegisterPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? const HomeWidget() : const LoginPageCopyWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? const HomePageWidget()
+              : const LoginRegisterPageWidget(),
         ),
         FFRoute(
-          name: 'MensaPlan',
-          path: '/mensaPlan',
-          builder: (context, params) => const MensaPlanWidget(),
+          name: 'CanteenPlan_Page',
+          path: '/canteenPlanPage',
+          builder: (context, params) => const CanteenPlanPageWidget(),
         ),
         FFRoute(
-          name: 'LoginPage_v1',
-          path: '/loginPageV1',
-          builder: (context, params) => const LoginPageV1Widget(),
+          name: 'Home_Page',
+          path: '/homePage',
+          builder: (context, params) => const HomePageWidget(),
         ),
         FFRoute(
-          name: 'HomeTest',
-          path: '/homeTest',
-          builder: (context, params) => HomeTestWidget(
-            visibilationOrder: params.getParam<FoodOrdersRow>(
-              'visibilationOrder',
-              ParamType.SupabaseRow,
-              isList: true,
-            ),
-          ),
+          name: 'Profile_Page',
+          path: '/profilePage',
+          builder: (context, params) => const ProfilePageWidget(),
         ),
         FFRoute(
-          name: 'CreatePostCopy',
-          path: '/createPostCopy',
-          builder: (context, params) => const CreatePostCopyWidget(),
+          name: 'ProfileSettings_Page',
+          path: '/profileSettingsPage',
+          builder: (context, params) => const ProfileSettingsPageWidget(),
         ),
         FFRoute(
-          name: 'NewMessageOld',
-          path: '/newMessageOld',
-          builder: (context, params) => const NewMessageOldWidget(),
+          name: 'SavefoodHome_Page',
+          path: '/savefoodHomePage',
+          builder: (context, params) => const SavefoodHomePageWidget(),
         ),
         FFRoute(
-          name: 'Home',
-          path: '/home',
-          builder: (context, params) => const HomeWidget(),
-        ),
-        FFRoute(
-          name: 'manuellerMyAccountCopy',
-          path: '/manuellerMyAccountCopy',
-          builder: (context, params) => const ManuellerMyAccountCopyWidget(),
-        ),
-        FFRoute(
-          name: 'Profile',
-          path: '/profile',
-          builder: (context, params) => const ProfileWidget(),
-        ),
-        FFRoute(
-          name: 'SuchUmsetzung1',
-          path: '/suchUmsetzung1',
-          builder: (context, params) => const SuchUmsetzung1Widget(),
-        ),
-        FFRoute(
-          name: 'ProfileSettings',
-          path: '/profileSettings',
-          builder: (context, params) => const ProfileSettingsWidget(),
-        ),
-        FFRoute(
-          name: 'SaveFood',
-          path: '/saveFood',
-          builder: (context, params) => const SaveFoodWidget(),
-        ),
-        FFRoute(
-          name: 'SucessPage',
-          path: '/sucessPage',
-          builder: (context, params) => SucessPageWidget(
+          name: 'SavefoodOfferSuccess_Page',
+          path: '/savefoodOfferSuccessPage',
+          builder: (context, params) => SavefoodOfferSuccessPageWidget(
             total: params.getParam(
               'total',
               ParamType.double,
@@ -154,39 +119,29 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'LoginPageCopy',
-          path: '/loginPageCopy',
-          builder: (context, params) => const LoginPageCopyWidget(),
+          name: 'LoginRegister_Page',
+          path: '/loginRegisterPage',
+          builder: (context, params) => const LoginRegisterPageWidget(),
         ),
         FFRoute(
-          name: 'SuchUmsetzung2',
-          path: '/suchUmsetzung2',
-          builder: (context, params) => const SuchUmsetzung2Widget(),
+          name: 'CANBEDELETEDSuchUmsetzung2Copy',
+          path: '/cANBEDELETEDSuchUmsetzung2Copy',
+          builder: (context, params) => const CANBEDELETEDSuchUmsetzung2CopyWidget(),
         ),
         FFRoute(
-          name: 'SuchUmsetzung2Copy',
-          path: '/suchUmsetzung2Copy',
-          builder: (context, params) => const SuchUmsetzung2CopyWidget(),
+          name: 'MessagesDisplay_Page',
+          path: '/messagesDisplayPage',
+          builder: (context, params) => const MessagesDisplayPageWidget(),
         ),
         FFRoute(
-          name: 'SuchUmsetzung2Copy2',
-          path: '/suchUmsetzung2Copy2',
-          builder: (context, params) => const SuchUmsetzung2Copy2Widget(),
+          name: 'UserManagement_Page',
+          path: '/userManagementPage',
+          builder: (context, params) => const UserManagementPageWidget(),
         ),
         FFRoute(
-          name: 'Messages',
-          path: '/messages',
-          builder: (context, params) => const MessagesWidget(),
-        ),
-        FFRoute(
-          name: 'UserManagement',
-          path: '/userManagement',
-          builder: (context, params) => const UserManagementWidget(),
-        ),
-        FFRoute(
-          name: 'MessageTagManagement',
-          path: '/messageTagManagement',
-          builder: (context, params) => const MessageTagManagementWidget(),
+          name: 'TagManagement_Page',
+          path: '/tagManagementPage',
+          builder: (context, params) => const TagManagementPageWidget(),
         ),
         FFRoute(
           name: 'MeineAnzeigen',
@@ -209,14 +164,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const CampusMartWidget(),
         ),
         FFRoute(
-          name: 'SaveFoodManageOffers',
-          path: '/saveFoodManageOffers',
-          builder: (context, params) => const SaveFoodManageOffersWidget(),
-        ),
-        FFRoute(
-          name: 'NewMessageCopy',
-          path: '/newMessageCopy',
-          builder: (context, params) => const NewMessageCopyWidget(),
+          name: 'SavefoodOfferManagement_Page',
+          path: '/savefoodOfferManagementPage',
+          builder: (context, params) => const SavefoodOfferManagementPageWidget(),
         ),
         FFRoute(
           name: 'produktdetails',
@@ -239,24 +189,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const EventCreatorWidget(),
         ),
         FFRoute(
-          name: 'TestTag',
-          path: '/testTag',
-          builder: (context, params) => const TestTagWidget(),
-        ),
-        FFRoute(
-          name: 'NewMessage',
-          path: '/newMessage',
-          builder: (context, params) => const NewMessageWidget(),
-        ),
-        FFRoute(
-          name: 'MessagesCopy',
-          path: '/messagesCopy',
-          builder: (context, params) => const MessagesCopyWidget(),
+          name: 'MessageNew_Page',
+          path: '/messageNewPage',
+          builder: (context, params) => const MessageNewPageWidget(),
         ),
         FFRoute(
           name: 'Credits',
           path: '/credits',
           builder: (context, params) => const CreditsWidget(),
+        ),
+        FFRoute(
+          name: 'CANBEDELETEDMessagesCopy2',
+          path: '/cANBEDELETEDMessagesCopy2',
+          builder: (context, params) => const CANBEDELETEDMessagesCopy2Widget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -427,7 +372,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/loginPageCopy';
+            return '/loginRegisterPage';
           }
           return null;
         },

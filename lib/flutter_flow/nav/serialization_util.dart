@@ -160,6 +160,7 @@ enum ParamType {
   FFPlace,
   FFUploadedFile,
   JSON,
+
   DataStruct,
   Enum,
   SupabaseRow,
